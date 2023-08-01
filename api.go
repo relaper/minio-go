@@ -28,7 +28,6 @@ import (
 	"math/rand"
 	"net"
 	"net/http"
-	"net/http/cookiejar"
 	"net/http/httptrace"
 	"net/http/httputil"
 	"net/url"
@@ -43,7 +42,6 @@ import (
 	"github.com/minio/minio-go/v7/pkg/credentials"
 	"github.com/minio/minio-go/v7/pkg/s3utils"
 	"github.com/minio/minio-go/v7/pkg/signer"
-	"golang.org/x/net/publicsuffix"
 )
 
 // Client implements Amazon S3 compatible methods.
@@ -207,10 +205,10 @@ func privateNew(endpoint string, opts *Options) (*Client, error) {
 
 	// Initialize cookies to preserve server sent cookies if any and replay
 	// them upon each request.
-	jar, err := cookiejar.New(&cookiejar.Options{PublicSuffixList: publicsuffix.List})
-	if err != nil {
-		return nil, err
-	}
+	//jar, err := cookiejar.New(&cookiejar.Options{PublicSuffixList: publicsuffix.List})
+	//if err != nil {
+	//	return nil, err
+	//}
 
 	// instantiate new Client.
 	clnt := new(Client)
@@ -236,11 +234,11 @@ func privateNew(endpoint string, opts *Options) (*Client, error) {
 
 	// Instantiate http client and bucket location cache.
 	clnt.httpClient = &http.Client{
-		Jar:       jar,
-		Transport: transport,
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			return http.ErrUseLastResponse
-		},
+		//Jar:       jar,
+		//Transport: transport,
+		//CheckRedirect: func(req *http.Request, via []*http.Request) error {
+		//	return http.ErrUseLastResponse
+		//},
 	}
 
 	// Sets custom region, if region is empty bucket location cache is used automatically.
